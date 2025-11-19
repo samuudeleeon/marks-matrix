@@ -82,6 +82,24 @@ def lowest_highest(marks: dict[str, int]) -> list[list[int | int]]:
     return list_lower_higher
 
 
+def show_least_often_score(students_marks: dict[str, int]) -> None:
+    """
+    Shows the score(s) that appear least often among the students.
+    """
+    # Count how many times each score appears
+    frequency = {}
+    for mark in students_marks.values():
+        frequency[mark] = frequency.get(mark, 0) + 1
+
+    # Find the minimum frequency
+    min_count = min(frequency.values())
+
+    # Collect all scores with that minimum frequency
+    least_often_scores = [mark for mark, count in frequency.items() if count == min_count]
+
+    print(f"Least often score(s): {least_often_scores} (appeared {min_count} times)")
+
+
 students_marks = {
     "Alice": 7, "Bob": 9, "Charlie": 3, "Diana": 7, "Ethan": 4,
     "Fiona": 3, "George": 7, "Hannah": 6, "Ian": 5, "Julia": 3,
@@ -110,6 +128,8 @@ def main():
         print(mark)
 
     print(lowest_highest(students_marks))
+
+    print(show_least_often_score(students_marks))
 
 
 if __name__ == "__main__":
