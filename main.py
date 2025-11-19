@@ -20,6 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+def average_score(students_marks: dict[str, int]) -> float:
+    """
+    Calculates the average score of all students.
+
+    Args:
+        students_marks: dict[str, int]
+            A dictionary whose keys are each student's name with the value being their score.
+
+    Returns:
+        The average score as a float.
+        Example: {"Sarah": 7, "Leo": 3} -> 5.0
+    """
+    total = sum(students_marks.values())
+    count = len(students_marks)
+    return total / count if count > 0 else 0.0
+
 def marks_matrix(students_marks: dict[str, int]) -> list[list[int | str]]:
     """
     Builds an ordered list of lists for each score given alongside the students that have obtained such score.
@@ -49,8 +65,7 @@ def marks_matrix(students_marks: dict[str, int]) -> list[list[int | str]]:
 
     return matrix
 
-
-def lowest_highest(marks: dict[str, int]) -> list[tuple(int | int)]:
+def lowest_highest(students_marks: dict[str, int]) -> list[tuple[int, int]]:
     """
     Builds a list showing the lowest mark alongside the number of students that were given that score.
 
@@ -68,7 +83,7 @@ def lowest_highest(marks: dict[str, int]) -> list[tuple(int | int)]:
     """
 
     list_lower_higher = []
-    matrix = marks_matrix(marks)
+    matrix = marks_matrix(students_marks)
 
     lowest = matrix[0]
     highest = matrix[-1]
@@ -81,8 +96,38 @@ def lowest_highest(marks: dict[str, int]) -> list[tuple(int | int)]:
 
     return list_lower_higher
 
+def most_often_score(students_marks: dict[str, int]) -> tuple[int, int]:
+    """
+    Determines which score was given the most times and how many students obtained it.
 
-def show_least_often_score(students_marks: dict[str, int]) -> None:
+    Args:
+        students_marks: dict[str, int]:
+            A dictionary whose keys are each students' name with the value being their score.
+            Example: {"Sarah": 7, "Leo": 3}
+
+    Returns:
+        A tuple containing the most frequently obtained score and the number of students
+        that were given such score.
+        Example: (7, 5)
+    """
+
+    matrix = marks_matrix(students_marks)
+
+    most_frequent_row = None
+    highest_count = -1
+
+    for row in matrix:
+        score = row[0]
+        count = len(row) - 1
+
+        if count > highest_count:
+            most_frequent_row = row
+            highest_count = count
+
+    return (most_frequent_row[0], highest_count)
+
+
+def least_often_score(students_marks: dict[str, int]) -> list[tuple[int, int]]:
     """
     Shows the score(s) that appear least often among the students.
     """
@@ -95,10 +140,8 @@ def show_least_often_score(students_marks: dict[str, int]) -> None:
     min_count = min(frequency.values())
 
     # Collect all scores with that minimum frequency
-    least_often_scores = [mark for mark, count in frequency.items() if count == min_count]
-
-    print(f"Least often score(s): {least_often_scores} (appeared {min_count} times)")
-
+    least_often_scores = [(mark, count) for mark, count in frequency.items() if count == min_count]
+    return least_often_scores
 
 students_marks = {
     "Alice": 7, "Bob": 9, "Charlie": 3, "Diana": 7, "Ethan": 4,
@@ -118,18 +161,14 @@ def main():
     """
     The main function of the program.
     """
-
-    # TODO - Show average score
-    # TODO - Show most often score
-    # TODO - Show least often score
-    # TODO - Show highest and lowest score
     marks = marks_matrix(students_marks)
     for mark in marks:
         print(mark)
 
-    print(lowest_highest(students_marks))
-
-    print(show_least_often_score(students_marks))
+    print("Lowest and highest:", lowest_highest(students_marks))
+    print("Avarage score:", average_score(students_marks))
+    print("Most often score:", most_often_score(students_marks))
+    print("Least often score:", least_often_score(students_marks))
 
 
 if __name__ == "__main__":
