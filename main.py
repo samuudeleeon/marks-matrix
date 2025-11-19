@@ -78,3 +78,35 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def lower_higher(marks: dict[str, int]) -> list[list[int | int]]:
+    """
+    Builds a list showing the lowest mark alongside the number of students that were given that score.
+
+    Args:
+        Takes the same argument as the main function does.
+        students_marks: dict[str, int]:
+            A dictionary whose keys are each students' name with the value being their score.
+            Example: {"Sarah": 7, "Leo": 3}
+
+    Returns:
+        The matrix containing the lowest and the highest marks and the times they were given.
+        The list containing two tuples, one with the lowest mark and the times it was given, the other one
+        with the highest mark and the times it was given.
+        Example: [(2, 1), (10, 3)]
+    """
+
+    list_lower_higher = []
+    matrix = marks_matrix(marks)
+
+    lowest = matrix[0]
+    highest = matrix[-1]
+
+    lowest_count = len(lowest) - 1
+    highest_count = len(highest) - 1
+
+    list_lower_higher.append((lowest[0], lowest_count))
+    list_lower_higher.append((highest[0], highest_count))
+
+    return list_lower_higher
